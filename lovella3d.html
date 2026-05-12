@@ -1,0 +1,1066 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lovella — Premium Uy To'qimachilik</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --gold: #c9a84c;
+        --gold-light: #e8d5a3;
+        --gold-dark: #8a6a1f;
+        --cream: #faf6f0;
+        --dark: #0e0c09;
+        --dark2: #1a1510;
+        --text: #2c2418;
+        --muted: #7a6a52;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background: var(--dark);
+        color: var(--cream);
+        overflow-x: hidden;
+      }
+
+      /* ─── CURSOR ─── */
+      .cursor {
+        position: fixed;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--gold);
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.3s,
+          height 0.3s,
+          opacity 0.3s;
+        mix-blend-mode: difference;
+      }
+      .cursor-ring {
+        position: fixed;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid var(--gold);
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition: all 0.15s ease;
+        opacity: 0.5;
+      }
+
+      /* ─── NOISE OVERLAY ─── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 1000;
+        opacity: 0.4;
+      }
+
+      /* ─── HEADER ─── */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 500;
+        padding: 1.2rem 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: linear-gradient(
+          to bottom,
+          rgba(14, 12, 9, 0.95),
+          transparent
+        );
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+      }
+
+      .logo {
+        font-family: "Playfair Display", serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--gold);
+        letter-spacing: 0.08em;
+        text-shadow: 0 0 40px rgba(201, 168, 76, 0.4);
+      }
+      .logo span {
+        font-style: italic;
+        color: var(--gold-light);
+      }
+
+      nav {
+        display: flex;
+        align-items: center;
+        gap: 2.5rem;
+      }
+      nav a {
+        color: rgba(250, 246, 240, 0.7);
+        text-decoration: none;
+        font-size: 0.85rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        transition: color 0.3s;
+        position: relative;
+      }
+      nav a::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: var(--gold);
+        transform: scaleX(0);
+        transition: transform 0.3s;
+      }
+      nav a:hover {
+        color: var(--gold);
+      }
+      nav a:hover::after {
+        transform: scaleX(1);
+      }
+
+      .lang-btns {
+        display: flex;
+        gap: 0.4rem;
+      }
+      .lang-btn {
+        font-size: 0.72rem;
+        padding: 3px 8px;
+        border: 1px solid rgba(201, 168, 76, 0.3);
+        border-radius: 3px;
+        cursor: pointer;
+        color: rgba(250, 246, 240, 0.5);
+        transition: all 0.2s;
+        letter-spacing: 0.08em;
+      }
+      .lang-btn:hover,
+      .lang-btn.active {
+        background: var(--gold);
+        color: var(--dark);
+        border-color: var(--gold);
+      }
+
+      .call-btn {
+        padding: 0.6rem 1.5rem;
+        border: 1px solid var(--gold);
+        color: var(--gold);
+        text-decoration: none;
+        font-size: 0.8rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        transition: all 0.3s;
+        clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      }
+      .call-btn:hover {
+        background: var(--gold);
+        color: var(--dark);
+      }
+
+      /* ─── HERO ─── */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        padding: 8rem 3rem 4rem;
+      }
+
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 80% 60% at 60% 50%,
+          rgba(201, 168, 76, 0.07) 0%,
+          transparent 70%
+        );
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+        position: relative;
+        z-index: 2;
+      }
+
+      .badge-pill {
+        display: inline-block;
+        font-size: 0.72rem;
+        letter-spacing: 0.2em;
+        color: var(--gold);
+        border: 1px solid rgba(201, 168, 76, 0.3);
+        padding: 0.4rem 1rem;
+        border-radius: 100px;
+        margin-bottom: 1.5rem;
+        animation: fadeUp 0.8s ease both;
+      }
+
+      h1.hero-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(3rem, 6vw, 5.5rem);
+        line-height: 1.05;
+        font-weight: 700;
+        animation: fadeUp 0.9s ease 0.1s both;
+      }
+      h1.hero-title em {
+        font-style: italic;
+        color: var(--gold);
+        display: block;
+        text-shadow: 0 0 60px rgba(201, 168, 76, 0.3);
+      }
+
+      .hero-desc {
+        font-size: 1rem;
+        color: rgba(250, 246, 240, 0.6);
+        line-height: 1.7;
+        margin: 1.5rem 0 2rem;
+        max-width: 420px;
+        animation: fadeUp 1s ease 0.2s both;
+      }
+
+      .phones {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        animation: fadeUp 1s ease 0.3s both;
+      }
+      .phones a {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--gold-light);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .phones a:hover {
+        color: var(--gold);
+      }
+      .phones a.main {
+        font-size: 1.8rem;
+        color: var(--gold);
+      }
+
+      /* ─── 3D CARD SCENE ─── */
+      .hero-visual {
+        perspective: 1200px;
+        animation: fadeUp 1s ease 0.2s both;
+      }
+
+      .card-3d {
+        width: 100%;
+        aspect-ratio: 3/4;
+        max-width: 440px;
+        margin: 0 auto;
+        position: relative;
+        transform-style: preserve-3d;
+        animation: float3d 8s ease-in-out infinite;
+      }
+
+      @keyframes float3d {
+        0% {
+          transform: rotateX(4deg) rotateY(-8deg) rotateZ(0deg);
+        }
+        25% {
+          transform: rotateX(-2deg) rotateY(6deg) rotateZ(0.5deg);
+        }
+        50% {
+          transform: rotateX(5deg) rotateY(10deg) rotateZ(-0.5deg);
+        }
+        75% {
+          transform: rotateX(-3deg) rotateY(-4deg) rotateZ(0.3deg);
+        }
+        100% {
+          transform: rotateX(4deg) rotateY(-8deg) rotateZ(0deg);
+        }
+      }
+
+      .card-face {
+        position: absolute;
+        inset: 0;
+        border-radius: 20px;
+        overflow: hidden;
+        background: linear-gradient(135deg, #1e1a12, #2a2218);
+        border: 1px solid rgba(201, 168, 76, 0.2);
+        box-shadow:
+          0 40px 80px rgba(0, 0, 0, 0.6),
+          0 0 0 1px rgba(201, 168, 76, 0.08),
+          inset 0 1px 0 rgba(201, 168, 76, 0.15);
+      }
+
+      .card-face img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.7;
+        mix-blend-mode: luminosity;
+      }
+
+      .card-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(14, 12, 9, 0.95) 0%,
+          rgba(14, 12, 9, 0.2) 50%,
+          transparent 100%
+        );
+      }
+
+      .card-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 2rem;
+      }
+      .card-tag {
+        font-size: 0.68rem;
+        letter-spacing: 0.2em;
+        color: var(--gold);
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+      }
+      .card-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.6rem;
+        font-weight: 600;
+        line-height: 1.2;
+      }
+
+      /* Shadow layer for 3D depth */
+      .card-shadow {
+        position: absolute;
+        inset: 0;
+        border-radius: 20px;
+        transform: translateZ(-40px) translateY(20px) scale(0.92);
+        background: rgba(201, 168, 76, 0.05);
+        filter: blur(30px);
+      }
+
+      /* floating badges */
+      .float-badge {
+        position: absolute;
+        background: rgba(14, 12, 9, 0.9);
+        border: 1px solid rgba(201, 168, 76, 0.3);
+        border-radius: 12px;
+        padding: 0.7rem 1rem;
+        font-size: 0.8rem;
+        backdrop-filter: blur(10px);
+        white-space: nowrap;
+        z-index: 10;
+        transform-style: preserve-3d;
+      }
+      .float-badge.top-right {
+        top: -1rem;
+        right: -1.5rem;
+        animation: floatBadge 5s ease-in-out infinite;
+      }
+      .float-badge.bottom-left {
+        bottom: 2rem;
+        left: -1.5rem;
+        animation: floatBadge 5s ease-in-out 2s infinite;
+      }
+      @keyframes floatBadge {
+        0%,
+        100% {
+          transform: translateY(0) translateZ(20px);
+        }
+        50% {
+          transform: translateY(-8px) translateZ(20px);
+        }
+      }
+      .float-badge .gold {
+        color: var(--gold);
+        font-weight: 600;
+      }
+
+      /* ─── BRAND MARQUEE ─── */
+      .brands-section {
+        padding: 3rem 0;
+        border-top: 1px solid rgba(201, 168, 76, 0.1);
+        border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+        overflow: hidden;
+      }
+      .marquee-track {
+        display: flex;
+        gap: 3rem;
+        animation: marquee 20s linear infinite;
+        width: max-content;
+      }
+      .marquee-track span {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.1rem;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: rgba(201, 168, 76, 0.4);
+        white-space: nowrap;
+        transition: color 0.3s;
+      }
+      .marquee-track span:hover {
+        color: var(--gold);
+      }
+      .dot {
+        color: var(--gold) !important;
+        opacity: 1 !important;
+      }
+      @keyframes marquee {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* ─── PRODUCTS ─── */
+      .products-section {
+        padding: 8rem 3rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .section-label {
+        font-size: 0.72rem;
+        letter-spacing: 0.25em;
+        color: var(--gold);
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+      }
+      .section-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2rem, 4vw, 3.5rem);
+        line-height: 1.1;
+        font-weight: 700;
+        margin-bottom: 4rem;
+      }
+      .section-title em {
+        font-style: italic;
+        color: var(--gold);
+      }
+
+      /* 3D product grid */
+      .prod-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 1.5rem;
+      }
+
+      .prod-card {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        cursor: pointer;
+        transform-style: preserve-3d;
+        transition:
+          transform 0.6s cubic-bezier(0.23, 1, 0.32, 1),
+          box-shadow 0.6s;
+        background: #1a1510;
+        border: 1px solid rgba(201, 168, 76, 0.1);
+      }
+      .prod-card:hover {
+        transform: translateY(-12px) rotateX(4deg) rotateY(-2deg);
+        box-shadow:
+          0 30px 60px rgba(0, 0, 0, 0.5),
+          0 0 30px rgba(201, 168, 76, 0.1);
+        border-color: rgba(201, 168, 76, 0.3);
+      }
+
+      .prod-card.large {
+        grid-row: span 2;
+        min-height: 500px;
+      }
+      .prod-card.small {
+        min-height: 220px;
+      }
+
+      .prod-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition:
+          transform 0.8s ease,
+          opacity 0.4s;
+        opacity: 0.65;
+      }
+      .prod-card:hover img {
+        transform: scale(1.05);
+        opacity: 0.8;
+      }
+
+      .prod-card-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(14, 12, 9, 0.9) 0%,
+          transparent 60%
+        );
+        transition: background 0.4s;
+      }
+      .prod-card:hover .prod-card-overlay {
+        background: linear-gradient(
+          to top,
+          rgba(14, 12, 9, 0.95) 0%,
+          rgba(14, 12, 9, 0.2) 70%,
+          transparent 100%
+        );
+      }
+
+      .prod-card-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1.5rem;
+      }
+      .prod-tag {
+        font-size: 0.65rem;
+        letter-spacing: 0.2em;
+        color: var(--gold);
+        background: rgba(201, 168, 76, 0.1);
+        border: 1px solid rgba(201, 168, 76, 0.2);
+        padding: 3px 8px;
+        border-radius: 4px;
+        display: inline-block;
+        margin-bottom: 0.5rem;
+      }
+      .prod-name {
+        font-family: "Playfair Display", serif;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--cream);
+      }
+      .prod-card.large .prod-name {
+        font-size: 1.8rem;
+      }
+
+      .prod-arrow {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        width: 36px;
+        height: 36px;
+        border: 1px solid rgba(201, 168, 76, 0.3);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+        font-size: 1rem;
+        opacity: 0;
+        transform: translateY(5px);
+        transition: all 0.3s;
+      }
+      .prod-card:hover .prod-arrow {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ─── CONTACT ─── */
+      .contact-section {
+        padding: 8rem 3rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .contact-section::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 70% 60% at 50% 50%,
+          rgba(201, 168, 76, 0.06) 0%,
+          transparent 70%
+        );
+      }
+
+      .contact-inner {
+        position: relative;
+        z-index: 2;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .contact-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2.5rem, 5vw, 4.5rem);
+        line-height: 1.1;
+        margin: 1rem 0 3rem;
+      }
+      .contact-title em {
+        font-style: italic;
+        color: var(--gold);
+      }
+
+      .contact-btns {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .btn-primary {
+        padding: 1rem 2.5rem;
+        background: var(--gold);
+        color: var(--dark);
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 0.9rem;
+        letter-spacing: 0.08em;
+        border-radius: 4px;
+        transition: all 0.3s;
+        clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      }
+      .btn-primary:hover {
+        background: var(--gold-light);
+        transform: translateY(-2px);
+      }
+
+      .btn-outline {
+        padding: 1rem 2rem;
+        border: 1px solid rgba(201, 168, 76, 0.4);
+        color: var(--gold);
+        text-decoration: none;
+        font-size: 0.9rem;
+        letter-spacing: 0.08em;
+        border-radius: 4px;
+        transition: all 0.3s;
+      }
+      .btn-outline:hover {
+        border-color: var(--gold);
+        background: rgba(201, 168, 76, 0.05);
+        transform: translateY(-2px);
+      }
+
+      /* ─── FOOTER ─── */
+      footer {
+        padding: 2rem 3rem;
+        border-top: 1px solid rgba(201, 168, 76, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        color: rgba(250, 246, 240, 0.3);
+      }
+      footer .logo-sm {
+        font-family: "Playfair Display", serif;
+        font-size: 1.1rem;
+        color: var(--gold);
+        letter-spacing: 0.08em;
+      }
+
+      /* ─── ANIMATIONS ─── */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ─── PLACEHOLDER for missing images ─── */
+      .img-placeholder {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          #1e1a12 0%,
+          #2d2418 50%,
+          #1a1410 100%
+        );
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        color: rgba(201, 168, 76, 0.3);
+        font-family: "Cormorant Garamond", serif;
+        font-size: 2rem;
+        letter-spacing: 0.1em;
+      }
+      .img-placeholder small {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 0.8rem;
+        letter-spacing: 0.15em;
+      }
+
+      @media (max-width: 900px) {
+        header {
+          padding: 1rem 1.5rem;
+        }
+        nav {
+          gap: 1.2rem;
+        }
+        .hero {
+          padding: 7rem 1.5rem 3rem;
+        }
+        .hero-grid {
+          grid-template-columns: 1fr;
+          gap: 3rem;
+        }
+        .card-3d {
+          max-width: 320px;
+        }
+        .products-section {
+          padding: 5rem 1.5rem;
+        }
+        .prod-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .prod-card.large {
+          grid-column: span 2;
+          grid-row: span 1;
+          min-height: 280px;
+        }
+        .contact-section {
+          padding: 5rem 1.5rem;
+        }
+        footer {
+          flex-direction: column;
+          gap: 1rem;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- HEADER -->
+    <header>
+      <div class="logo">Love<span>lla</span></div>
+      <nav>
+        <a href="#">Uy</a>
+        <a href="#products" data-lang="nav_products">Mahsulotlar</a>
+        <a href="#contact" data-lang="nav_contact">Aloqa</a>
+        <div class="lang-btns">
+          <span class="lang-btn active" onclick="changeLang('uz')">UZ</span>
+          <span class="lang-btn" onclick="changeLang('ru')">RU</span>
+          <span class="lang-btn" onclick="changeLang('en')">EN</span>
+        </div>
+      </nav>
+      <a href="tel:+998994202020" class="call-btn" data-lang="call_btn"
+        >Qo'ng'iroq</a
+      >
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-grid">
+        <div class="hero-text">
+          <div class="badge-pill" data-lang="hero_badge">
+            ● TOSHKENT &nbsp;•&nbsp; 2022 YILDAN
+          </div>
+          <h1 class="hero-title">
+            Uy to'qimachilik<br />
+            <em data-lang="hero_em">premium</em>
+          </h1>
+          <p class="hero-desc" data-lang="hero_p">
+            Yetakchi jahon brendlaridan to'shak choyshablar, yostiqlar,
+            ko'rpalar va matraslar.
+          </p>
+          <div class="phones">
+            <a href="tel:+998994202020" class="main">99-420-20-20</a>
+            <a href="tel:+998771770029">77-177-00-29</a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="card-3d" id="heroCard">
+            <div class="card-shadow"></div>
+            <div class="card-face">
+              <div class="img-placeholder">
+                ❧
+                <small>LOVELLA</small>
+              </div>
+              <div class="card-overlay"></div>
+              <div class="card-content">
+                <div class="card-tag">● Premium Collection</div>
+                <div class="card-title">
+                  Uy to'qimachilik<br />yangi kolleksiya
+                </div>
+              </div>
+            </div>
+            <div class="float-badge top-right">
+              <span class="gold">⭐ 20+</span> Jahon Brendlari
+            </div>
+            <div class="float-badge bottom-left">
+              🚚 <span class="gold">Toshkent</span> bo'ylab yetkazib berish
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BRANDS MARQUEE -->
+    <div class="brands-section">
+      <div class="marquee-track" id="marquee">
+        <span>Zebra Casa</span><span class="dot">✦</span>
+        <span>Tivolyo Home</span><span class="dot">✦</span>
+        <span>Maison Dor</span><span class="dot">✦</span> <span>TAC</span
+        ><span class="dot">✦</span> <span>Ozdilek</span
+        ><span class="dot">✦</span> <span>Sarev</span><span class="dot">✦</span>
+        <span>Zebra Casa</span><span class="dot">✦</span>
+        <span>Tivolyo Home</span><span class="dot">✦</span>
+        <span>Maison Dor</span><span class="dot">✦</span> <span>TAC</span
+        ><span class="dot">✦</span> <span>Ozdilek</span
+        ><span class="dot">✦</span> <span>Sarev</span><span class="dot">✦</span>
+        <span>Zebra Casa</span><span class="dot">✦</span>
+        <span>Tivolyo Home</span><span class="dot">✦</span>
+        <span>Maison Dor</span><span class="dot">✦</span> <span>TAC</span
+        ><span class="dot">✦</span> <span>Ozdilek</span
+        ><span class="dot">✦</span> <span>Sarev</span><span class="dot">✦</span>
+      </div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <section id="products">
+      <div class="products-section">
+        <div class="reveal">
+          <div class="section-label">Kolleksiyamiz</div>
+          <h2 class="section-title">
+            Qulay uy uchun<br /><em data-lang="products_em">hamma narsa</em>
+          </h2>
+        </div>
+
+        <div class="prod-grid reveal">
+          <div class="prod-card large">
+            <div class="img-placeholder" style="min-height: 500px">
+              ❧<small>TO'SHAK CHOYSHABLAR</small>
+            </div>
+            <div class="prod-card-overlay"></div>
+            <div class="prod-card-info">
+              <div class="prod-tag">TOP</div>
+              <div class="prod-name" data-lang="item_bedding">
+                To'shak choyshablar
+              </div>
+            </div>
+            <div class="prod-arrow">→</div>
+          </div>
+
+          <div class="prod-card small">
+            <div class="img-placeholder">✿<small>YOSTIQLAR</small></div>
+            <div class="prod-card-overlay"></div>
+            <div class="prod-card-info">
+              <div class="prod-name" data-lang="item_pillows">Yostiqlar</div>
+            </div>
+            <div class="prod-arrow">→</div>
+          </div>
+
+          <div class="prod-card small">
+            <div class="img-placeholder">❈<small>SOCHIQLAR</small></div>
+            <div class="prod-card-overlay"></div>
+            <div class="prod-card-info">
+              <div class="prod-name" data-lang="item_towels">Sochiqlar</div>
+            </div>
+            <div class="prod-arrow">→</div>
+          </div>
+
+          <div class="prod-card small">
+            <div class="img-placeholder">◈<small>KO'RPALAR</small></div>
+            <div class="prod-card-overlay"></div>
+            <div class="prod-card-info">
+              <div class="prod-name" data-lang="item_blankets">Ko'rpalar</div>
+            </div>
+            <div class="prod-arrow">→</div>
+          </div>
+
+          <div class="prod-card small">
+            <div class="img-placeholder">⬡<small>MATRASLAR</small></div>
+            <div class="prod-card-overlay"></div>
+            <div class="prod-card-info">
+              <div class="prod-name" data-lang="item_mattress">Matraslar</div>
+            </div>
+            <div class="prod-arrow">→</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact-section">
+      <div class="contact-inner reveal">
+        <div class="section-label" data-lang="contact_badge">BOG'LANISH</div>
+        <h2 class="contact-title">Bizga <em>qo'ng'iroq</em><br />qiling!</h2>
+        <div class="contact-btns">
+          <a href="tel:+998994202020" class="btn-primary">99-420-20-20</a>
+          <a href="https://t.me/lovella_uz" class="btn-outline">Telegram</a>
+          <a
+            href="https://www.instagram.com/lovella__premium_/"
+            class="btn-outline"
+            >Instagram</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="logo-sm">Lovella</div>
+      <div>© 2025 Lovella Premium. Barcha huquqlar himoyalangan.</div>
+      <div>Toshkent, O'zbekiston</div>
+    </footer>
+
+    <script>
+      // Cursor
+      const cursor = document.getElementById("cursor");
+      const ring = document.getElementById("cursorRing");
+      document.addEventListener("mousemove", (e) => {
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
+        setTimeout(() => {
+          ring.style.left = e.clientX + "px";
+          ring.style.top = e.clientY + "px";
+        }, 80);
+      });
+
+      // 3D tilt on hero card
+      const heroCard = document.getElementById("heroCard");
+      const heroVisual = heroCard?.parentElement;
+      if (heroVisual) {
+        heroVisual.addEventListener("mousemove", (e) => {
+          const rect = heroVisual.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          heroCard.style.animation = "none";
+          heroCard.style.transform = `rotateX(${-y * 18}deg) rotateY(${x * 18}deg)`;
+        });
+        heroVisual.addEventListener("mouseleave", () => {
+          heroCard.style.animation = "float3d 8s ease-in-out infinite";
+          heroCard.style.transform = "";
+        });
+      }
+
+      // Scroll reveal
+      const reveals = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+              setTimeout(() => entry.target.classList.add("visible"), i * 100);
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+      reveals.forEach((el) => observer.observe(el));
+
+      // Language
+      const translations = {
+        uz: {
+          nav_products: "Mahsulotlar",
+          nav_contact: "Aloqa",
+          call_btn: "Qo'ng'iroq",
+          hero_badge: "● TOSHKENT • 2022 YILDAN",
+          hero_em: "premium",
+          hero_p:
+            "Yetakchi jahon brendlaridan to'shak choyshablar, yostiqlar, ko'rpalar va matraslar.",
+          products_em: "hamma narsa",
+          item_bedding: "To'shak choyshablar",
+          item_pillows: "Yostiqlar",
+          item_towels: "Sochiqlar",
+          item_blankets: "Ko'rpalar",
+          item_mattress: "Matraslar",
+          contact_badge: "BOG'LANISH",
+        },
+        ru: {
+          nav_products: "Продукция",
+          nav_contact: "Контакты",
+          call_btn: "Звонок",
+          hero_badge: "● ТАШКЕНТ • С 2022",
+          hero_em: "премиум",
+          hero_p:
+            "Постельное бельё, подушки, одеяла и матрасы от ведущих мировых брендов.",
+          products_em: "всё для дома",
+          item_bedding: "Постельное бельё",
+          item_pillows: "Подушки",
+          item_towels: "Полотенца",
+          item_blankets: "Одеяла",
+          item_mattress: "Матрасы",
+          contact_badge: "СВЯЗАТЬСЯ",
+        },
+        en: {
+          nav_products: "Products",
+          nav_contact: "Contact",
+          call_btn: "Call Now",
+          hero_badge: "● TASHKENT • SINCE 2022",
+          hero_em: "premium",
+          hero_p:
+            "Bedding, pillows, blankets and mattresses from leading world brands.",
+          products_em: "everything",
+          item_bedding: "Bedding sets",
+          item_pillows: "Pillows",
+          item_towels: "Towels",
+          item_blankets: "Blankets",
+          item_mattress: "Mattresses",
+          contact_badge: "CONTACT US",
+        },
+      };
+
+      function changeLang(lang) {
+        document
+          .querySelectorAll(".lang-btn")
+          .forEach((b) => b.classList.remove("active"));
+        document.querySelectorAll(".lang-btn").forEach((b) => {
+          if (b.textContent.toLowerCase() === lang) b.classList.add("active");
+        });
+        document.querySelectorAll("[data-lang]").forEach((el) => {
+          const key = el.getAttribute("data-lang");
+          if (translations[lang]?.[key]) el.innerHTML = translations[lang][key];
+        });
+        localStorage.setItem("lang", lang);
+      }
+
+      changeLang(localStorage.getItem("lang") || "uz");
+    </script>
+  </body>
+</html>
